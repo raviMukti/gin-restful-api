@@ -22,7 +22,7 @@ func NewCarController(carService service.CarService) CarController {
 }
 
 func (controller *CarControllerImpl) Create(ctx *gin.Context) {
-	carCreateRequest := dto.CarCreateRequest{}
+	var carCreateRequest *dto.CarCreateRequest = &dto.CarCreateRequest{}
 
 	err := ctx.ShouldBindJSON(carCreateRequest)
 	helper.PanicIfError(err)
@@ -41,7 +41,7 @@ func (controller *CarControllerImpl) Create(ctx *gin.Context) {
 }
 
 func (controller *CarControllerImpl) Update(ctx *gin.Context) {
-	carUpdateRequest := dto.CarUpdateRequest{}
+	var carUpdateRequest *dto.CarUpdateRequest = &dto.CarUpdateRequest{}
 
 	err := ctx.ShouldBindJSON(carUpdateRequest)
 	helper.PanicIfError(err)

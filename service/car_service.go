@@ -6,8 +6,8 @@ import (
 )
 
 type CarService interface {
-	Create(ctx *gin.Context, request dto.CarCreateRequest)
-	Update(ctx *gin.Context, request dto.CarUpdateRequest) dto.CarResponse
+	Create(ctx *gin.Context, request *dto.CarCreateRequest)
+	Update(ctx *gin.Context, request *dto.CarUpdateRequest) dto.CarResponse
 	Remove(ctx *gin.Context, carId int)
 	GetById(ctx *gin.Context, carId int) dto.CarResponse
 	GetAll(ctx *gin.Context) []dto.CarResponse

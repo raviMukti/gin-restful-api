@@ -2,6 +2,7 @@ package service
 
 import (
 	"database/sql"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
@@ -26,7 +27,7 @@ func NewCarService(carRepository repository.CarRepository, DB *sql.DB, validate 
 	}
 }
 
-func (carService *CarServiceImpl) Create(ctx *gin.Context, request dto.CarCreateRequest) {
+func (carService *CarServiceImpl) Create(ctx *gin.Context, request *dto.CarCreateRequest) {
 	// Validate Request Body
 	err := carService.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -41,14 +42,14 @@ func (carService *CarServiceImpl) Create(ctx *gin.Context, request dto.CarCreate
 	car := domain.Car{
 		CarName:  request.CarName,
 		CarBrand: request.CarBrand,
-		CarYear:  int64(request.CarYear),
+		CarYear:  request.CarYear,
 	}
 
 	// Insert A Car
 	car = carService.CarRepository.Save(ctx, tx, car)
 }
 
-func (carService *CarServiceImpl) Update(ctx *gin.Context, request dto.CarUpdateRequest) dto.CarResponse {
+func (carService *CarServiceImpl) Update(ctx *gin.Context, request *dto.CarUpdateRequest) dto.CarResponse {
 	// Validate Request Body
 	err := carService.Validate.Struct(request)
 	helper.PanicIfError(err)
@@ -59,14 +60,18 @@ func (carService *CarServiceImpl) Update(ctx *gin.Context, request dto.CarUpdate
 
 	defer helper.CommitOrRollback(tx)
 
-	car, err := carService.CarRepository.FindBydId(ctx, tx, request.Id)
+	id := ctx.Param("carId")
+	carId, err := strconv.Atoi(id)
+	helper.PanicIfError(err)
+
+	car, err := carService.CarRepository.FindBydId(ctx, tx, carId)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 
 	car.CarName = request.CarName
 	car.CarBrand = request.CarBrand
-	car.CarYear = int64(request.CarYear)
+	car.CarYear = request.CarYear
 
 	car = carService.CarRepository.Update(ctx, tx, car)
 
@@ -74,7 +79,7 @@ func (carService *CarServiceImpl) Update(ctx *gin.Context, request dto.CarUpdate
 		Id:       int(car.Id),
 		CarName:  car.CarName,
 		CarBrand: car.CarBrand,
-		CarYear:  int(car.CarYear),
+		CarYear:  car.CarYear,
 	}
 
 	return carResponse
@@ -109,7 +114,7 @@ func (carService *CarServiceImpl) GetById(ctx *gin.Context, carId int) dto.CarRe
 		Id:       int(car.Id),
 		CarName:  car.CarName,
 		CarBrand: car.CarBrand,
-		CarYear:  int(car.CarYear),
+		CarYear:  car.CarYear,
 	}
 
 	return carResponse
@@ -130,7 +135,7 @@ func (carService *CarServiceImpl) GetAll(ctx *gin.Context) []dto.CarResponse {
 			Id:       int(car.Id),
 			CarName:  car.CarName,
 			CarBrand: car.CarBrand,
-			CarYear:  int(car.CarYear),
+			CarYear:  car.CarYear,
 		}
 		carResponses = append(carResponses, car)
 	}

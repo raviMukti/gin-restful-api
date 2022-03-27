@@ -1,3 +1,33 @@
+### Create Car
+POST http://localhost:8000/api/cars
+Accept: application/json
+Content-Type: application/json
+
+{
+    "car_name": "XPander",
+    "car_brand": "Honda",
+    "car_year": "2020"
+}
+
 ### GET Car By ID
 GET http://localhost:8000/api/cars/1
 Accept: "application/json"
+
+### Get All Cars
+GET http://localhost:8000/api/cars/
+Accept: "application/json"
+
+### Update Car By Id
+PUT http://localhost:8000/api/cars/3
+Accept: application/json
+Content-Type: application/json
+
+{
+    "car_name": "Avanza",
+    "car_brand": "Toyota",
+    "car_year": "2015"
+}
+
+### DELETE Car By ID
+DELETE http://localhost:8000/api/cars/4
+Accept: application/json

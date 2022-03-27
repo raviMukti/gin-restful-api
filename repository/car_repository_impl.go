@@ -37,7 +37,7 @@ func (repository *CarRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, car
 }
 
 func (repository *CarRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, car domain.Car) {
-	Query := "DELETE FROM category WHERE id = ?"
+	Query := "DELETE FROM car WHERE id = ?"
 	_, err := tx.ExecContext(ctx, Query, car.Id)
 	helper.PanicIfError(err)
 }
