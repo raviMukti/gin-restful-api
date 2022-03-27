@@ -260,15 +260,15 @@
       "CarRequest": {
         "type": "object",
         "properties": {
-          "carName": {
+          "car_name": {
             "type": "string",
             "example": "avanza"
           },
-          "carBrand": {
+          "car_brand": {
             "type": "string",
             "example": "Toyota"
           },
-          "carYear": {
+          "car_year": {
             "type": "integer",
             "format": "int64"
           }
@@ -281,15 +281,15 @@
             "type": "integer",
             "format": "int64"
           },
-          "carName": {
+          "car_name": {
             "type": "string",
             "example": "avanza"
           },
-          "carBrand": {
+          "car_brand": {
             "type": "string",
             "example": "Toyota"
           },
-          "carYear": {
+          "car_year": {
             "type": "integer",
             "format": "int64"
           }
@@ -301,7 +301,7 @@
           "error": {
             "type": "string"
           },
-          "errorDetail": {
+          "error_detail": {
             "type": "string"
           },
           "code": {
@@ -323,7 +323,7 @@
           "error": {
             "type": "string"
           },
-          "errorDetail": {
+          "error_detail": {
             "type": "string"
           },
           "code": {
@@ -349,7 +349,7 @@
           "error": {
             "type": "string"
           },
-          "errorDetail": {
+          "error_detail": {
             "type": "string"
           },
           "code": {
@@ -362,7 +362,7 @@
           "data": {
             "type": "object",
             "properties": {
-              "carList": {
+              "car_list": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Car"
