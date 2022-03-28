@@ -120,7 +120,7 @@ func (carService *CarServiceImpl) GetById(ctx *gin.Context, carId int) dto.CarRe
 	return carResponse
 }
 
-func (carService *CarServiceImpl) GetAll(ctx *gin.Context) []dto.CarResponse {
+func (carService *CarServiceImpl) GetAll(ctx *gin.Context) dto.CarListResponse {
 	tx, err := carService.DB.Begin()
 	helper.PanicIfError(err)
 
@@ -140,5 +140,10 @@ func (carService *CarServiceImpl) GetAll(ctx *gin.Context) []dto.CarResponse {
 		carResponses = append(carResponses, car)
 	}
 
-	return carResponses
+	carListResponse := dto.CarListResponse{
+		CarList:      carResponses,
+		TotalRecords: len(cars),
+	}
+
+	return carListResponse
 }

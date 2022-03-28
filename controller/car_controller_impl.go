@@ -30,11 +30,11 @@ func (controller *CarControllerImpl) Create(ctx *gin.Context) {
 	controller.CarService.Create(ctx, carCreateRequest)
 
 	webResponse := web.WebResponse{
-		Error:       nil,
-		ErrorDetail: nil,
+		Error:       "",
+		ErrorDetail: "",
 		Code:        http.StatusCreated,
 		Message:     http.StatusText(http.StatusCreated),
-		Data:        nil,
+		Data:        "",
 	}
 
 	ctx.JSON(http.StatusCreated, webResponse)
@@ -49,8 +49,8 @@ func (controller *CarControllerImpl) Update(ctx *gin.Context) {
 	carResponse := controller.CarService.Update(ctx, carUpdateRequest)
 
 	webResponse := web.WebResponse{
-		Error:       nil,
-		ErrorDetail: nil,
+		Error:       "",
+		ErrorDetail: "",
 		Code:        http.StatusOK,
 		Message:     http.StatusText(http.StatusOK),
 		Data:        carResponse,
@@ -67,11 +67,11 @@ func (controller *CarControllerImpl) Remove(ctx *gin.Context) {
 	controller.CarService.Remove(ctx, id)
 
 	webResponse := web.WebResponse{
-		Error:       nil,
-		ErrorDetail: nil,
+		Error:       "",
+		ErrorDetail: "",
 		Code:        http.StatusOK,
 		Message:     http.StatusText(http.StatusOK),
-		Data:        nil,
+		Data:        "",
 	}
 
 	ctx.JSON(http.StatusOK, webResponse)
@@ -85,8 +85,8 @@ func (controller *CarControllerImpl) GetById(ctx *gin.Context) {
 	carResponse := controller.CarService.GetById(ctx, id)
 
 	webResponse := web.WebResponse{
-		Error:       nil,
-		ErrorDetail: nil,
+		Error:       "",
+		ErrorDetail: "",
 		Code:        http.StatusOK,
 		Message:     http.StatusText(http.StatusOK),
 		Data:        carResponse,
@@ -96,14 +96,14 @@ func (controller *CarControllerImpl) GetById(ctx *gin.Context) {
 }
 
 func (controller *CarControllerImpl) GetAll(ctx *gin.Context) {
-	carResponses := controller.CarService.GetAll(ctx)
+	carListResponse := controller.CarService.GetAll(ctx)
 
 	webResponse := web.WebResponse{
-		Error:       nil,
-		ErrorDetail: nil,
+		Error:       "",
+		ErrorDetail: "",
 		Code:        http.StatusOK,
 		Message:     http.StatusText(http.StatusOK),
-		Data:        carResponses,
+		Data:        carListResponse,
 	}
 
 	ctx.JSON(http.StatusOK, webResponse)

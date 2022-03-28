@@ -9,6 +9,8 @@ import (
 func NewRoute(carController controller.CarController) *gin.Engine {
 
 	router := gin.Default()
+	// Register Panic Handler
+	router.Use(gin.CustomRecovery(exception.ErrorHandler))
 
 	// Register Routes
 	router.GET("/api/cars", carController.GetAll)
@@ -16,9 +18,6 @@ func NewRoute(carController controller.CarController) *gin.Engine {
 	router.POST("/api/cars", carController.Create)
 	router.PUT("/api/cars/:carId", carController.Update)
 	router.DELETE("/api/cars/:carId", carController.Remove)
-
-	// Register Panic Handler
-	gin.CustomRecovery(exception.ErrorHandler)
 
 	return router
 }

@@ -4,7 +4,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "car_name": "XPander",
+    "car_name": "Mobil Esemka",
     "car_brand": "Honda",
     "car_year": "2020"
 }

@@ -335,11 +335,7 @@
           },
           "data": {
             "type": "object",
-            "properties": {
-              "car": {
-                "$ref": "#/components/schemas/Car"
-              }
-            }
+            "$ref": "#/components/schemas/Car"
           }
         }
       },
@@ -367,6 +363,9 @@
                 "items": {
                   "$ref": "#/components/schemas/Car"
                 }
+              },
+              "total_records":{
+                "type": "integer"
               }
             }
           }
