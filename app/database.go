@@ -9,7 +9,7 @@ import (
 )
 
 func NewDB() *sql.DB {
-	connectionString := os.Getenv("DATABASE_USER") + ":" + os.Getenv("DATABASE_PASSWORD") + "@tcp(" + os.Getenv("DATABASE_URI") + ":" + os.Getenv("DATABASE_PORT") + ")/?parseTime=true"
+	connectionString := os.Getenv("DATABASE_USER") + ":" + os.Getenv("DATABASE_PASSWORD") + "@tcp(" + os.Getenv("DATABASE_URI") + ":" + os.Getenv("DATABASE_PORT") + ")/" + os.Getenv("DATABASE_INSTANCE") + "?parseTime=true"
 	db, err := sql.Open("mysql", connectionString)
 	helper.PanicIfError(err)
 
