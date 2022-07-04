@@ -13,6 +13,7 @@ import (
 	"github.com/raviMukti/gin-restful-api/model/web"
 	"github.com/raviMukti/gin-restful-api/repository"
 	"github.com/raviMukti/gin-restful-api/service"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func Init() {
@@ -21,11 +22,15 @@ func Init() {
 }
 
 var (
-	db            *sql.DB                  = InitDatabase()
-	carRepository repository.CarRepository = repository.NewCarRepository()
-	validate      *validator.Validate      = validator.New()
-	carService    service.CarService       = service.NewCarService(carRepository, db, validate)
-	carController controller.CarController = controller.NewCarController(carService)
+	mongoClient    *mongo.Client             = GetClient()
+	db             *sql.DB                   = InitDatabase()
+	carRepository  repository.CarRepository  = repository.NewCarRepository()
+	bookRepository repository.BookRepository = repository.NewBookRepository(mongoClient)
+	validate       *validator.Validate       = validator.New()
+	carService     service.CarService        = service.NewCarService(carRepository, db, validate)
+	bookService    service.BookService       = service.NewBookService(bookRepository, validate)
+	carController  controller.CarController  = controller.NewCarController(carService)
+	bookController controller.BookController = controller.NewBookController(bookService)
 )
 
 func SetupRouter() *gin.Engine {
@@ -47,6 +52,16 @@ func SetupRouter() *gin.Engine {
 		cars.POST("/", carController.Create)
 		cars.PUT("/:carId", carController.Update)
 		cars.DELETE("/:carId", carController.Remove)
+	}
+
+	// Register Car Routes Group
+	books := router.Group("/api/books")
+	{
+		books.GET("/", bookController.GetAll)
+		books.GET("/:bookId", bookController.GetById)
+		books.POST("/", bookController.Create)
+		books.PUT("/:bookId", bookController.Update)
+		books.DELETE("/:bookId", bookController.Remove)
 	}
 
 	return router
