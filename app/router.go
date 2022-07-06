@@ -22,15 +22,17 @@ func Init() {
 }
 
 var (
-	mongoClient    *mongo.Client             = GetClient()
-	db             *sql.DB                   = InitDatabase()
-	carRepository  repository.CarRepository  = repository.NewCarRepository()
-	bookRepository repository.BookRepository = repository.NewBookRepository(mongoClient)
-	validate       *validator.Validate       = validator.New()
-	carService     service.CarService        = service.NewCarService(carRepository, db, validate)
-	bookService    service.BookService       = service.NewBookService(bookRepository, validate)
-	carController  controller.CarController  = controller.NewCarController(carService)
-	bookController controller.BookController = controller.NewBookController(bookService)
+	mongoClient             *mongo.Client                      = GetClient()
+	db                      *sql.DB                            = InitDatabase()
+	carRepository           repository.CarRepository           = repository.NewCarRepository()
+	bookRepository          repository.BookRepository          = repository.NewBookRepository(mongoClient)
+	validate                *validator.Validate                = validator.New()
+	carService              service.CarService                 = service.NewCarService(carRepository, db, validate)
+	bookService             service.BookService                = service.NewBookService(bookRepository, validate)
+	eventProducerService    service.EventProducerService       = service.NewEventServiceProducer()
+	carController           controller.CarController           = controller.NewCarController(carService)
+	bookController          controller.BookController          = controller.NewBookController(bookService)
+	eventProducerController controller.EventProducerController = controller.NewEventProducerController(eventProducerService)
 )
 
 func SetupRouter() *gin.Engine {
@@ -54,7 +56,7 @@ func SetupRouter() *gin.Engine {
 		cars.DELETE("/:carId", carController.Remove)
 	}
 
-	// Register Car Routes Group
+	// Register Books Routes Group
 	books := router.Group("/api/books")
 	{
 		books.GET("/", bookController.GetAll)
@@ -62,6 +64,12 @@ func SetupRouter() *gin.Engine {
 		books.POST("/", bookController.Create)
 		books.PUT("/:bookId", bookController.Update)
 		books.DELETE("/:bookId", bookController.Remove)
+	}
+
+	// Register Event Routes Group
+	event := router.Group("/api/event")
+	{
+		event.POST("/", eventProducerController.CreateEvent)
 	}
 
 	return router
